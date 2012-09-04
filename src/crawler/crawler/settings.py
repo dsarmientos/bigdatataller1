@@ -6,12 +6,12 @@
 #     http://doc.scrapy.org/topics/settings.html
 #
 
-BOT_NAME = 'tutorial'
+BOT_NAME = 'crawler'
 BOT_VERSION = '1.0'
 
-SPIDER_MODULES = ['tutorial.spiders']
-NEWSPIDER_MODULE = 'tutorial.spiders'
-USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
+SPIDER_MODULES = ['crawler.spiders']
+NEWSPIDER_MODULE = 'crawler.spiders'
+USER_AGENT = '%s/%s' % ('Mozilla', '5.001')
 
 SPIDER_MIDDLEWARES = [
     'scrapy.contrib.spidermiddleware.offsite.OffsiteMiddleware',

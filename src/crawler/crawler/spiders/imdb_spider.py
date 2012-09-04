@@ -6,16 +6,17 @@ class ImdbSpider(CrawlSpider):
     name = "imdb"
     allowed_domains = ["www.imdb.com"]
     start_urls = [
-        'http://www.imdb.com/title/tt0107211/',
-	'http://www.imdb.com/name/nm0000193/',
-	'http://www.imdb.com/list/v58pud2k-f8/',
+        'http://www.imdb.com/name/nm0000221/',
+        'http://www.imdb.com/name/nm0674781/',
+        'http://www.imdb.com/name/nm0000876/',
+        'http://www.imdb.com/name/nm1330560/',
+        'http://www.imdb.com/name/nm0107281/',
     ]
     rules = (
-        # Extract links matching 'category.php' (but not matching 'subsection.php')
-        # and follow links from them (since no callback means follow=True by default).
+        # Follow this links, but don't parse them
         #Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/\.*'))),
 
-        # Extract links matching 'item.php' and parse them with the spider's method parse_item
+        # Extract links matching and parse them with the spider's method parse_item
         Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/name/nm[0-9]+/$')), callback='parse_page', follow=True),
         Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/title/tt[0-9]+/$')), callback='parse_page', follow=True),
     )
