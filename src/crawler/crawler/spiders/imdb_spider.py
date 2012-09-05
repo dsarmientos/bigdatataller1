@@ -1,5 +1,15 @@
+import re
+
 from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
+
+
+def extract_base_links(value):
+    m = re.search(
+        r'http://(www\.imdb\.com/(?:(?:title/tt)|(?:name/nm))[0-9]+).*',
+        value)
+    if m:
+        return m.group(1)
 
 
 class ImdbSpider(CrawlSpider):
@@ -13,12 +23,19 @@ class ImdbSpider(CrawlSpider):
         'http://www.imdb.com/name/nm0412382/',
     ]
     rules = (
-        # Follow this links, but don't parse them
-        Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/\.*'))),
-
-        # Extract links matching and parse them with the spider's method parse_item
-        Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/name/nm[0-9]+/$')), callback='parse_page', follow=True),
-        Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/title/tt[0-9]+/$')), callback='parse_page', follow=True),
+        # Follow this links, and extract new links to crawl
+        Rule(
+            SgmlLinkExtractor(
+                allow=(r'www.imdb.com/\.*',),
+                process_value=extract_base_links)
+        ),
+        # Extract links matching and parse them with the spider's method
+        Rule(SgmlLinkExtractor(
+            allow=(r'www.imdb.com/name/nm[0-9]+/$')),
+            callback='parse_page', follow=True),
+        Rule(SgmlLinkExtractor(
+            allow=(r'www.imdb.com/title/tt[0-9]+/$')),
+            callback='parse_page', follow=True),
     )
 
     def parse_page(self, response):
