@@ -14,7 +14,7 @@ class ImdbSpider(CrawlSpider):
     ]
     rules = (
         # Follow this links, but don't parse them
-        #Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/\.*'))),
+        Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/\.*'))),
 
         # Extract links matching and parse them with the spider's method parse_item
         Rule(SgmlLinkExtractor(allow=(r'www.imdb.com/name/nm[0-9]+/$')), callback='parse_page', follow=True),
