@@ -16,11 +16,7 @@ class ImdbSpider(CrawlSpider):
     name = "imdb"
     allowed_domains = ["www.imdb.com"]
     start_urls = [
-        'http://www.imdb.com/name/nm0001348/',
-        'http://www.imdb.com/name/nm0000535/',
-        'http://www.imdb.com/name/nm0627878/',
-        'http://www.imdb.com/name/nm0000474/',
-        'http://www.imdb.com/name/nm0000079/',
+        'http://www.imdb.com/',
     ]
     rules = (
         # Extract links matching and parse them with the spider's method
