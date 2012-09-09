@@ -1,5 +1,5 @@
-import datetime
 import os
+import re
 
 from bs4 import BeautifulSoup
 
@@ -12,33 +12,28 @@ def reducer(key, value):
     html = list(value)[0]
     yield key, html
 
-class ActorDataMapper(object):
+class ActorMapper(object):
     def __call__(self, key, value):
         actor = self.parse(value)
-        birthday = actor['birthday']
-        name = actor['name']
-        edad = actor['age']
-        yield (name, birthday), actor
+        actor.update({'record_type': 'actor', 'id': key})
+        yield key, actor
 
     def parse(self, html):
-        import datetime
-        import re
-        parsed_html = {'name':None, 'age':None, 'birthday':None}
+        actor = {}
         soup = BeautifulSoup(html)
         name_tag = soup.find(itemprop="name")
         if name_tag:
-            parsed_html['name'] = re.sub(r'\s', ' ', name_tag.text)
+            actor['name'] = re.sub(r'\s', ' ', name_tag.text.strip())
         birthday_tag = soup.find(itemprop="birthDate")
         if birthday_tag:
            birthday = birthday_tag.get('datetime')
-           dt = datetime.datetime.strptime(birthday, '%Y-%m-%d')
-           parsed_html['birthday'] = birthday
-        return parsed_html
+           actor['birthday'] = birthday
+        return actor
 
 
 if __name__ == "__main__":
     import dumbo
     job = dumbo.Job()
     job.additer(html_mapper, reducer)
-    job.additer(ActorDataMapper, reducer)
+    job.additer(ActorMapper, reducer)
     job.run()
