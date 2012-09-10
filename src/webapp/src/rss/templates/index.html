@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Taller 1: MapReduce Hadoop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/media/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .working { background:url('/media/img/indicator.gif') no-repeat right center }
+    </style>
+    <link href="/media/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="/media/ico/favicon.ico">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">RSS Filter</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="row">
+        <div class="span12">
+	  <form id="form" class="well">
+	  <label>Filtro 3</label>
+	  <input id="datepicker" type="text" class="span3" placeholder="Palabras clave ">
+	  <span class="help-block">Encontrar el nombre de los actores y actrices conocidos por la aplicación, que cumplen años en esta fecha.</span>
+	</form>
+      </div>
+</div>
+
+      <div class="row">
+        <div class="span3">
+          <h2>Feed sin filtrar</h2>
+	  <div style="max-height:330px; overflow:auto">
+	    <table class="table table-striped">
+	      <thead><tr><th>Título</th></tr></thead>
+	     <tbody>		    
+             {% for titulo in titulos %}
+	     <tr><td>{{titulo}}</tr></td>
+	       {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="span3">
+          <h2>Filtrado Regex</h2>
+	  <div style="max-height:330px; overflow:auto">
+	    <table id="regex_table" class="table table-striped">
+	      <thead><tr><th>Título</th></tr></thead>
+	     <tbody>		    
+            </tbody>
+            </table>
+	  </div>
+        </div>
+        <div class="span6">
+          <h2>Filtrado XQuery</h2>
+	  <div style="max-height:330px; overflow:auto">
+	    <table id="xquery_table" class="table table-striped">
+	      <thead><tr><th>Título</th><th>Fecha</th><th>Link</th></tr></thead>
+	      <tbody>		    
+              </tbody>
+            </table>
+	  </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>Daniel Sarmiento Suárez. Universidad de Los Andes 2012</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/media/js/jquery.js"></script>
+    <script src="/media/js/bootstrap.js"></script>
+    <script src="/media/js/rss.js"></script>
+    <script src="/media/js/bootstrap-datepicker.js"></script>
+
+  </body>
+</html>
