@@ -75,13 +75,57 @@ class ActorMapper(object):
         return known_for
 
 
+class MovieMapper(object):
+    def __call__(self, key, value):
+        movie = self.parse(value)
+        movie.update({'record_type': 'movie', 'id': key})
+        for actor in movie['cast']:
+            key = actor['actor_id']
+            yield key, str(movie)
+
+    def parse(self, html):
+        movie = {}
+        doc = lh.document_fromstring(html)
+        title_tag = doc.xpath(r'//h1[@itemprop="name"]')
+        if title_tag:
+            movie['title'] = self.get_title_from_tag(title_tag[0])
+        published_tag = doc.xpath(r'//*[@itemprop="datePublished"]')
+        if published_tag:
+            movie['year'] = self.get_year_from_published_tag(published_tag[0])
+        genre_tags = doc.xpath(r'//*[@itemprop="genre"]')
+        if genre_tags:
+            movie['genre'] = genre_tags[0].text
+        cast_tags = doc.xpath(r'//td[@class="name"]')
+        movie['cast'] = self.get_cast_from_tags(cast_tags)
+
+        return movie
+
+
+    def get_title_from_tag(self, name_tag):
+        return re.sub(r'\s', ' ', name_tag.text.strip())
+
+
+    def get_year_from_published_tag(self, published_tag):
+        year = published_tag.get('datetime')[:4]
+        return year
+
+    def get_cast_from_tags(self, cast_tags):
+        cast = []
+        for element in cast_tags:
+            actor_link = element.find('a')
+            actor_id = actor_link.get('href')[-10:-1]
+            name = actor_link.text.strip()
+            cast.append({'actor_id': actor_id, 'name': name})
+        return cast
+
+
 def reducer(key, value):
     html = value.next()
     yield key, html
 
-
 if __name__ == "__main__":
     import dumbo
     job = dumbo.Job()
-    job.additer(ActorMapper, reducer)
+    #job.additer(ActorMapper, reducer)
+    job.additer(MovieMapper, reducer)
     job.run()
