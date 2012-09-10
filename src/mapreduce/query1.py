@@ -62,7 +62,7 @@ def join_reducer(key, value):
             info = val2[0][1]
             count = val1[0][1]
         info.update({'colleagues':count})
-        yield key, info
+        yield key, str(info)
 
 
 def gender_sum_reducer(key, value):
